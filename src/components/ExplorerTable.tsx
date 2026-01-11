@@ -212,7 +212,7 @@ const ExplorerTable = ({ isLoading = false }: ExplorerTableProps) => {
     const fetchLatest = async () => {
         try {
             setRemoteLoading(true);
-            const res = await fetch("http://mnee.facilitator.agent402.tech/records/latest");
+            const res = await fetch("https://mnee.facilitator.agent402.tech/records/latest");
             if (!res.ok) throw new Error("Failed to fetch");
             const data = await res.json();
             if (!Array.isArray(data)) return;
@@ -239,7 +239,7 @@ const ExplorerTable = ({ isLoading = false }: ExplorerTableProps) => {
             setIsSearching(true);
             searchLastRef.current = q;
             const res = await fetch(
-                `http://mnee.facilitator.agent402.tech/records/search?q=${encodeURIComponent(q)}`
+                `https://mnee.facilitator.agent402.tech/records/search?q=${encodeURIComponent(q)}`
             );
             if (!res.ok) throw new Error("Search failed");
             const data = await res.json();
