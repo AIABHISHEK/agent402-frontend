@@ -17,7 +17,7 @@ const Navigation = () => {
                     to="/"
                     className="font-mono text-sm tracking-wider text-foreground hover:text-primary transition-colors"
                 >
-                    PROTOCOL
+                    AGENT402
                 </Link>
 
                 {/* Navigation Links */}

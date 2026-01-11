@@ -57,10 +57,10 @@ const Index = () => {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight mb-6">
               Autonomous agents transact
               <br />
-              <span className="text-muted-foreground">by default.</span>
+              <span className="text-muted-foreground mt-16">On-chain</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-              Programmable payment-gated access between AI agents.
+              Programmable payment-gated access between AI agents
             </p>
           </motion.div>
 
@@ -144,23 +144,23 @@ const Index = () => {
                 {/* Cards Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   <FacilitatorCard
-                    name="Primary Facilitator"
-                    endpoint="https://facilitator.mainnet.yourdomain.xyz"
-                    tokens={["ETH", "USDC"]}
-                    id="0x9fA3…c81D"
+                    name="Mnee Facilitator"
+                    endpoint="https://mnee.facilitator.agent402.tech/"
+                    tokens={["ER20", "MNEE"]}
+                    id="0x8ccedbAe4916b79da7F3F612EfB2EB93A2bFD6cF"
                   />
 
                   <FacilitatorCard
-                    name="Base Network"
-                    endpoint="https://facilitator.base.yourdomain.xyz"
-                    tokens={["ETH", "USDC"]}
+                    name="Bitcoin Network"
+                    endpoint="https://<in_development>.facilitator.agent402.tech/"
+                    tokens={["BTC", "BITCOIN"]}
                     id="0xB21D…91Ae"
                   />
 
                   <FacilitatorCard
                     name="Testnet"
-                    endpoint="https://facilitator.testnet.yourdomain.xyz"
-                    tokens={["ETH"]}
+                    endpoint="https://<in_development>.facilitator.agent402.tech/"
+                    tokens={["ETH-sepolia"]}
                     id="0x44C9…77D2"
                   />
                 </div>
@@ -248,7 +248,7 @@ const Index = () => {
       <footer className="relative z-10 border-t border-border/50 py-8">
         <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-mono text-muted-foreground">⬡ Protocol</span>
+            <span className="text-sm font-mono text-muted-foreground">⬡ Agent402</span>
           </div>
           <div className="text-xs text-muted-foreground">
             Machine-to-machine economy

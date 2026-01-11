@@ -84,7 +84,7 @@ export function FacilitatorCard({
                     Facilitator ID
                 </div>
                 <div className="flex items-center justify-between gap-3 font-mono text-sm text-foreground">
-                    <span>{id}</span>
+                    <span className="max-w-[220px] truncate font-mono block">{id}</span>
                     <button
                         onClick={() => copy(id, "id")}
                         className="p-2 -m-2 text-muted-foreground hover:text-foreground"

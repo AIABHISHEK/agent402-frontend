@@ -46,7 +46,7 @@ export const StateCard = ({ variant, index }: StateCardProps) => {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.15, duration: 0.5 }}
       viewport={{ once: true }}
-      className={`relative p-8 rounded-2xl border-2 transition-all duration-500 ${config.borderClass} ${config.glowClass} ${config.bgClass} group`}
+      className={`relative p-8 rounded-2xl border-2 transition-all duration-500 ${config.borderClass} ${config.glowClass} bg-[#0a0a07] group`}
     >
       {/* State number */}
       <div className="absolute -top-3 left-6 px-3 py-1 bg-background text-xs font-mono text-muted-foreground border border-border rounded-full">

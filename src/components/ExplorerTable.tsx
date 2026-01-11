@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { ExternalLink, Copy, Check, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -74,6 +74,23 @@ const mockPayments: AgentPayment[] = [
     },
 ];
 
+interface AgentPayment {
+    id: string;
+    timestamp: Date;
+    agentFrom: {
+        name: string;
+        address: string;
+    };
+    agentTo: {
+        name: string;
+        address: string;
+    };
+    amount: string;
+    token: string;
+    txHash: string;
+    chain: string;
+}
+
 const formatDate = (date: Date): string => {
     const day = date.getDate().toString().padStart(2, '0');
     const month = date.toLocaleString('en-US', { month: 'short' }).toUpperCase();
@@ -102,6 +119,26 @@ const getExplorerUrl = (hash: string, chain: string): string => {
         arbitrum: "https://arbiscan.io/tx/",
     };
     return `${explorers[chain] || explorers.ethereum}${hash}`;
+};
+
+const mapRecordToPayment = (rec: Record<string, unknown>): AgentPayment => {
+    const intent = (rec?.signedIntent as Record<string, unknown>)?.intent as Record<string, unknown> || {};
+    const sender = (intent.sender as string) || "";
+    const receiver = (intent.receiver as string) || "";
+    const createdAt = rec.created_at ? new Date(rec.created_at as string | number) : (rec.createdAt ? new Date((rec.createdAt as number) * 1000) : new Date());
+    const networkId = (intent.networkId as string) || "ethereum";
+    const chain = networkId.split("-")[0] || "ethereum";
+
+    return {
+        id: (rec._id as string) || (intent.intentId as string) || Math.random().toString(36).slice(2),
+        timestamp: createdAt,
+        agentFrom: { name: sender, address: sender },
+        agentTo: { name: receiver, address: receiver },
+        amount: (intent.amount as string) || "0",
+        token: (intent.token as string) || "",
+        txHash: (rec.txHash as string) || "",
+        chain,
+    };
 };
 
 interface AddressCellProps {
@@ -163,21 +200,94 @@ interface ExplorerTableProps {
 const ExplorerTable = ({ isLoading = false }: ExplorerTableProps) => {
     const [hoveredRow, setHoveredRow] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState("");
+    const [remoteLoading, setRemoteLoading] = useState(false);
+    const [payments, setPayments] = useState<AgentPayment[]>(mockPayments);
 
-    const filteredPayments = useMemo(() => {
-        if (!searchQuery.trim()) return mockPayments;
+    const [searchResults, setSearchResults] = useState<AgentPayment[] | null>(null);
+    const [isSearching, setIsSearching] = useState(false);
+    const searchLastRef = useRef("");
 
-        const query = searchQuery.toLowerCase();
-        return mockPayments.filter((payment) =>
-            payment.agentFrom.name.toLowerCase().includes(query) ||
-            payment.agentFrom.address.toLowerCase().includes(query) ||
-            payment.agentTo.name.toLowerCase().includes(query) ||
-            payment.agentTo.address.toLowerCase().includes(query) ||
-            payment.txHash.toLowerCase().includes(query)
-        );
+    const loadingState = isLoading || remoteLoading || isSearching;
+
+    const fetchLatest = async () => {
+        try {
+            setRemoteLoading(true);
+            const res = await fetch("http://mnee.facilitator.agent402.tech/records/latest");
+            if (!res.ok) throw new Error("Failed to fetch");
+            const data = await res.json();
+            if (!Array.isArray(data)) return;
+
+            const mapped = data.map(mapRecordToPayment);
+
+            setPayments(mapped);
+        } catch (e) {
+            console.error("Failed to fetch latest records", e);
+        } finally {
+            setRemoteLoading(false);
+        }
+    };
+
+    const fetchSearch = async (query: string) => {
+        const q = query.trim();
+        if (!q) {
+            setSearchResults(null);
+            setIsSearching(false);
+            return;
+        }
+
+        try {
+            setIsSearching(true);
+            searchLastRef.current = q;
+            const res = await fetch(
+                `http://mnee.facilitator.agent402.tech/records/search?q=${encodeURIComponent(q)}`
+            );
+            if (!res.ok) throw new Error("Search failed");
+            const data = await res.json();
+            if (!Array.isArray(data)) {
+                setSearchResults([]);
+                return;
+            }
+            // ensure response corresponds to latest query
+            if (searchLastRef.current !== q) return;
+
+            const mapped = data.map(mapRecordToPayment);
+            setSearchResults(mapped);
+        } catch (e) {
+            console.error("Search failed", e);
+            setSearchResults([]);
+        } finally {
+            setIsSearching(false);
+        }
+    };
+
+    useEffect(() => {
+        // initial fetch
+        fetchLatest();
+
+        // poll every 60s
+        const id = setInterval(fetchLatest, 60_000);
+        return () => clearInterval(id);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []); // run once
+
+    // Debounced search effect: call /records/search when query changes
+    useEffect(() => {
+        if (!searchQuery.trim()) {
+            setSearchResults(null);
+            return;
+        }
+
+        const t = setTimeout(() => fetchSearch(searchQuery), 350);
+        return () => clearTimeout(t);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchQuery]);
 
-    if (isLoading) {
+    const filteredPayments = useMemo(() => {
+        if (searchQuery.trim()) return searchResults ?? [];
+        return payments;
+    }, [searchQuery, searchResults, payments]);
+
+    if (loadingState) {
         return (
             <div className="w-full overflow-hidden">
                 {/* Desktop Table */}
