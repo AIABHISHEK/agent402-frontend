@@ -156,8 +156,8 @@ const AddressCell = ({ name, address }: AddressCellProps) => {
     };
 
     return (
-        <div className="flex flex-col gap-0.5">
-            <span className="text-foreground text-sm">{name}</span>
+        <div className="flex flex-col gap-0.5 min-w-0">
+            <span className="text-foreground text-sm truncate block max-w-[220px]">{name}</span>
             <button
                 onClick={handleCopy}
                 className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors group"
@@ -399,13 +399,15 @@ const ExplorerTable = ({ isLoading = false }: ExplorerTableProps) => {
                                 </td>
                                 <td className="py-4 px-4">
                                     <a
-                                        href={getExplorerUrl(payment.txHash, payment.chain)}
+                                        href={payment.txHash ? getExplorerUrl(payment.txHash, payment.chain) : '#'}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="inline-flex items-center gap-1.5 font-mono text-xs text-muted-foreground hover:text-foreground transition-colors group"
                                     >
-                                        <span>{truncateHash(payment.txHash)}</span>
-                                        <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        <span>{payment.txHash ? truncateHash(payment.txHash) : '-'}</span>
+                                        {payment.txHash && (
+                                            <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                        )}
                                     </a>
                                 </td>
                             </tr>
