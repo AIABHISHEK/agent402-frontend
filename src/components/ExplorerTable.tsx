@@ -112,6 +112,12 @@ const truncateHash = (hash: string): string => {
     return `${hash.slice(0, 6)}…${hash.slice(-4)}`;
 };
 
+const formatToken = (token: string): string => {
+    if (!token) return "";
+    // keep short tokens (symbols) as-is, truncate long values (addresses)
+    return token.length > 12 ? `${token.slice(0, 6)}…${token.slice(-4)}` : token;
+};
+
 const getExplorerUrl = (hash: string, chain: string): string => {
     const explorers: Record<string, string> = {
         ethereum: "https://etherscan.io/tx/",
@@ -394,7 +400,7 @@ const ExplorerTable = ({ isLoading = false }: ExplorerTableProps) => {
                                 </td>
                                 <td className="py-4 px-4 text-right">
                                     <span className="font-mono text-sm text-foreground font-medium">
-                                        {payment.amount} {payment.token}
+                                        {payment.amount} {formatToken(payment.token)}
                                     </span>
                                 </td>
                                 <td className="py-4 px-4">
@@ -454,7 +460,7 @@ const ExplorerTable = ({ isLoading = false }: ExplorerTableProps) => {
                             {/* Amount */}
                             <div className="mb-3">
                                 <span className="font-mono text-lg text-foreground font-medium">
-                                    {payment.amount} {payment.token}
+                                    {payment.amount} {formatToken(payment.token)}
                                 </span>
                             </div>
 
