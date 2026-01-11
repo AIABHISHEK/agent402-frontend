@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Protocol Infrastructure Design System
+   Dark + White + Rare Spectral Accents
+   No blue. No cyan. No crypto gradients.
+*/
+
+@layer base {
+  :root {
+    /* Foundation - Near black, neutral */
+    --background: 240 6% 4%;
+    --foreground: 0 0% 98%;
+
+    /* Surfaces */
+    --card: 240 5% 7%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 5% 7%;
+    --popover-foreground: 0 0% 98%;
+
+    /* Primary - White doing heavy lifting */
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 6% 4%;
+
+    /* Secondary - Subtle surface */
+    --secondary: 240 4% 12%;
+    --secondary-foreground: 0 0% 98%;
+
+    /* Muted - For hints and disabled */
+    --muted: 240 4% 16%;
+    --muted-foreground: 240 5% 49%;
+
+    /* Accent - Subtle hover states */
+    --accent: 240 4% 16%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 4% 14%;
+    --input: 240 4% 14%;
+    --ring: 0 0% 98%;
+
+    --radius: 0.5rem;
+
+    /* === PROTOCOL SPECTRAL COLORS === */
+    
+    /* Payment State - Burnt Amber (economic, not decorative) */
+    --payment: 38 76% 56%;
+    --payment-deep: 38 82% 44%;
+    --payment-glow: 38 76% 56%;
+    
+    /* Premium Agent - Royal Orchid (exclusivity) */
+    --premium: 270 70% 59%;
+    --premium-deep: 270 85% 46%;
+    --premium-glow: 270 70% 59%;
+    
+    /* Verified/Facilitator - Deep Jade (correctness) */
+    --verified: 153 47% 36%;
+    --verified-bright: 153 53% 53%;
+    --verified-glow: 153 53% 53%;
+    
+    /* Flow/Wire colors */
+    --wire: 240 4% 18%;
+    --wire-active: 0 0% 100%;
+    --node-idle: 240 4% 24%;
+
+    /* Sidebar */
+    --sidebar-background: 240 5% 6%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 0 0% 98%;
+    --sidebar-primary-foreground: 240 6% 4%;
+    --sidebar-accent: 240 4% 12%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 4% 14%;
+    --sidebar-ring: 0 0% 98%;
+  }
+
+  .dark {
+    --background: 240 6% 4%;
+    --foreground: 0 0% 98%;
+    --card: 240 5% 7%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 5% 7%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 6% 4%;
+    --secondary: 240 4% 12%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 4% 16%;
+    --muted-foreground: 240 5% 49%;
+    --accent: 240 4% 16%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 4% 14%;
+    --input: 240 4% 14%;
+    --ring: 0 0% 98%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  /* Payment glow effect */
+  .glow-payment {
+    box-shadow: 0 0 40px hsl(var(--payment-glow) / 0.35);
+  }
+  
+  /* Premium glow effect */
+  .glow-premium {
+    box-shadow: 0 0 32px hsl(var(--premium-glow) / 0.30);
+  }
+  
+  /* Verified glow effect */
+  .glow-verified {
+    box-shadow: 0 0 32px hsl(var(--verified-glow) / 0.35);
+  }
+
+  /* Subtle text glow */
+  .text-glow-payment {
+    text-shadow: 0 0 20px hsl(var(--payment-glow) / 0.5);
+  }
+  
+  .text-glow-verified {
+    text-shadow: 0 0 20px hsl(var(--verified-glow) / 0.5);
+  }
+}
+
+/* Fonts - System stack for speed, monospace for code */
+@layer base {
+  html {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  
+  code, pre, .font-mono {
+    font-family: "SF Mono", "Fira Code", "Fira Mono", "Roboto Mono", monospace;
+  }
+}
