@@ -59,8 +59,8 @@ const Index = () => {
               <br />
               <span className="text-muted-foreground mt-16">On-chain</span>
             </h1>
-            <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-              Programmable payment-gated access between AI agents
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Build autonomous agent economies where payments unlock access on-chain
             </p>
           </motion.div>
 
@@ -108,6 +108,32 @@ const Index = () => {
             <StateCard variant="denied" index={0} />
             <StateCard variant="settlement" index={1} />
             <StateCard variant="verified" index={2} />
+          </div>
+        </div>
+      </section>
+
+      <section className="relative z-10 py-24 border-t border-border/50">
+        <div className="max-w-5xl mx-auto px-6">
+
+          {/* Header */}
+          <div className="text-center mb-12">
+            <h3 className="text-xs font-mono tracking-widest uppercase text-muted-foreground mb-4">
+              Protocol Walkthrough
+            </h3>
+            <p className="text-xl text-foreground/90 max-w-2xl mx-auto">
+              A visual overview of agent-to-agent payments and facilitator verification.
+            </p>
+          </div>
+
+          {/* Video */}
+          <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10 bg-black">
+            <iframe
+              src="https://www.youtube.com/embed/obRG0jy4Gvk?rel=0&modestbranding=1&playsinline=1"
+              title="Protocol Walkthrough"
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full"
+            />
           </div>
         </div>
       </section>
